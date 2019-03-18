@@ -1,0 +1,48 @@
+bool bs(ll x, ll y, int n  )
+{
+    ll high= (ll)n-1 ;
+    ll low =(ll) 1;
+    point p;
+    p.x=x;
+    p.y=y;
+
+    while(high-low  1)
+    {
+        ll mid = low+high ;
+        mid/=2;
+        ll dir = direction(pnt[0],pnt[mid],p);
+
+         if( dir <0)
+        {
+            high = mid;
+        }
+        else
+        {
+            low = mid;
+        }
+
+    }
+    ll p1= direction(pnt[0],pnt[low], p);
+    ll p2= direction(pnt[low],pnt[high], p);
+    ll p3= direction(pnt[high],pnt[0], p);
+
+  
+    if( (p1 >= 0 and p2 >= 0 and p3>=0 ) )
+    {
+
+        return true;
+    }
+      if( (p1 <= 0 and p2 <= 0 and p3<=0 ) )
+    {
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+
+
+
+}

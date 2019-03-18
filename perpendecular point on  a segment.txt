@@ -1,0 +1,1 @@
+Point on segment = P1 + projection * P12 (unit vector)

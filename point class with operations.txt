@@ -1,0 +1,36 @@
+struct point
+{
+    ll x, y;
+    point() {}
+    point(ll _x, ll _y):x(_x),y(_y) {}
+    point operator + (const point& p) const
+    {
+        return point(x + p.x, y + p.y);
+    }
+    point operator - (const point& p) const
+    {
+        return point(x - p.x, y - p.y);
+    }
+    point operator * (const point& p) const
+    {
+        return point(x * p.x, y * p.y);
+    }
+    point operator / (const point& p) const
+    {
+        return point(x / p.x, y / p.y);
+    }
+    bool operator == (const point& p) const
+    {
+        return (x == p.x and y == p.y);
+    }
+    bool operator != (const point& p) const
+    {
+        return !(x == p.x and y == p.y);
+    }
+    bool operator < (const point& p) const
+    {
+        if(x != p.x)
+            return x < p.x;
+        return y < p.y;
+    }
+};

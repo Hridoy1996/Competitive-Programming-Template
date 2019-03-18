@@ -1,0 +1,58 @@
+bool onsegment(point a, point p, point b )
+{
+
+    if(p.x<=max(a.x,b.x) and p.x >= min(a.x,b.x) and p.y<=max(a.y,b.y) and p.y >= min(a.y,b.y))
+        return true;
+    else
+        return false;
+
+}
+int orientation (point p,point q, point r)
+{
+
+    int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+
+    if (val == 0)
+        return 0;
+
+    return (val > 0)? 1: 2;
+}
+bool doIntersect(point p1, point q1, point p2, point q2)
+{
+
+    int o1 = orientation(p1, q1, p2);
+    int o2 = orientation(p1, q1, q2);
+    int o3 = orientation(p2, q2, p1);
+    int o4 = orientation(p2, q2, q1);
+    if (o1 != o2 && o3 != o4)
+        return true;
+//    if( (o1 == 0 and o2==0) || (o3 == 0 and o4==0) )
+//    {
+//        if(p2.x==q1.x and  q1.y==p2.y and p1.x==q2.y and  q2.x==p1.y)
+//            return false;
+////        if( (p2.x==q1.x and  q1.y==p2.y) || (p1.x==q2.y and  q2.x==p1.y ) ||  (p1.x==p2.y and  p2.x==p1.y ) ||  (p1.x==q1.y and  q1.x==p1.y ) ||  (q1.x==q2.y and  q2.x==q1.y ) || (p2.x==q2.y and  q2.x==p2.y ))
+////            return true;
+//        else if(  (onsegment(p1,p2,q1) and !onsegment(p1,q2,q1) and ((p1.x==p2.x and  p2.y==p1.y ) || (q1.x==p2.x and  q1.y==p2.y )) ) )
+//        {
+//            return true;
+//        }
+//        else if(  (onsegment(p1,q2,q1) and !onsegment(p1,p2,q1) and ((p1.x==q2.x and  q2.y==p1.y ) || (q1.x==q2.x and  q1.y==q2.y )) ) )
+//        {
+//            return true;
+//        }
+//        else
+//            return false;
+//    }
+
+//    if((p1.x==p2.x and p1.y==p2.y) || (p1.x==p2.x and p1.y==p2.y))
+    if (o1 == 0 && onsegment(p1, p2, q1))
+        return true;
+    if (o2 == 0 && onsegment(p1, q2, q1))
+        return true;
+    if (o3 == 0 && onsegment(p2, p1, q2))
+        return true;
+    if (o4 == 0 && onsegment(p2, q1, q2))
+        return true;
+
+    return false;
+}

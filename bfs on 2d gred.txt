@@ -1,0 +1,44 @@
+struct node
+{
+    int p;
+    int q;
+};
+
+vector<node>source,destination;
+int n ;
+int sx,sy,dx,dy;
+int Dx[]= {1,-1,0,0};
+int Dy[]= {0,0,1,-1};
+char mat[100][100];
+
+void bfs ()
+{
+    queue < node > qu;
+    bool visited[100][100] = {0};
+    int level[100][100];
+    node u, v;
+    u.p = sx;
+    u.q = sy;
+    qu.push (u);
+    visited[u.p][u.q] = 1;
+
+    while (qu.empty() == 0)
+    {
+        u = qu.front();
+        qu.pop();
+        for (int i = 0; i < 4; i++)
+        {
+            node v;
+            v.p = u.p + Dx[i];
+            v.q = u.q + Dy[i];
+            if ((v.p >= 1 && v.p <=n ) && (v.q >= 1 && v.q <= n) && !visited[v.p][v.q] &&  mat[v.p][v.q]=='0'  )
+            {
+
+                visited[v.p][v.q] = 1;
+                //   level[v.p][v.q] = level[u.p][u.q] + 1;
+                qu.push (v);
+                source.push_back(v);
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+else if(r_rr + r <=rr){
+            ans=acos(-1)*r*r;
+
+        }
+        else if(r_rr + rr <=r){
+            ans=acos(-1)*rr*rr;
+
+        }
+
+rr , r -> radius
+r_rr -> distance btn two  circles

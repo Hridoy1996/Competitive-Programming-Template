@@ -1,0 +1,1 @@
+area = len*len*n/(4*tan(180/n))

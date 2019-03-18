@@ -1,0 +1,170 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<pair<int,long long> >vec[10009];
+int visited[10009];
+long long dis[10009];
+int parse_table[10009][50];
+int parent[10009];
+int lvl[10009];
+
+void lca_init(int n )
+{
+    memset(parse_table,-1,sizeof parse_table);
+    parse_table[1][0]=-1;
+    for(int i = 2 ; i<=n; i++)
+    {
+        parse_table[i][0]=parent[i];
+    }
+
+    for(int j= 1 ; (1 << j)<=n ; j++)
+    {
+        for(int i = 1 ; i<=n; i++)
+        {
+            if(parse_table[i][j-1]!=-1)
+            {
+                parse_table[i][j]=parse_table[parse_table[i][j-1]][j-1];
+            }
+        }
+    }
+}
+int lca(int n, int p, int q )
+{
+
+    if(lvl[p]<lvl[q])
+        swap(p,q);
+
+    int log = log2(lvl[p]);
+
+    for(int i = log ; i>=0 ; i--)
+    {
+        if(lvl[p]-(1<<i) >=lvl[q])
+        {
+            p=parse_table[p][i];
+        }
+    }
+    if(p==q)
+        return q;
+
+    for(int i = log ; i>=0 ; i--)
+    {
+        if(parse_table[p][i]!=-1 and parse_table[p][i]!=parse_table[q][i])
+        {
+            p=parse_table[p][i];
+            q=parse_table[q][i];
+        }
+    }
+
+    return parent[q];
+
+
+}
+
+
+int dfs(int u,long long w,int l )
+{
+    visited[u]=1;
+    dis[u]=w;
+    lvl[u]=l;
+
+    for(int i = 0 ; i<vec[u].size(); i++)
+    {
+        int v =vec[u][i].first;
+        if(visited[v]!=1)
+        {
+            parent[v]=u;
+            dfs(v,w+vec[u][i].second,l+1);
+
+        }
+    }
+}
+int main()
+{
+    int tst;
+    cin>>tst;
+    while(tst--)
+    {
+
+        int n ;
+        scanf("%d",&n);
+        int a,b,w;
+        for(int i = 1 ; i<n ; i++)
+        {
+            scanf("%d%d%d",&a,&b,&w);
+            vec[a].push_back(make_pair(b,w));
+            vec[b].push_back(make_pair(a,w));
+        }
+        dis[1]=0;
+        dfs(1,0,0);
+        char s[8];
+        //  string s;
+               lca_init(n);
+        while(scanf("%s", s)==1)
+        {
+            if(s[1]=='O')
+                break;
+            if(s[0]=='D')
+            {
+                scanf("%d%d",&a,&b);
+                ///lca_initialization
+               // lca_init(n);
+                int findd= lca(n,a,b);
+                long long ans = dis[a]+dis[b]-2*dis[findd];
+                printf("%lld\n",ans);
+            }
+            else
+            {
+                // cin>>s;
+                scanf("%d%d%d",&a,&b,&w);
+
+                int findd= lca(n,a,b);
+                if(w<=(lvl[a]-lvl[findd]+1))
+                {
+                    w--;
+                    //  parse_table[a][i];
+
+                    while(1)
+                    {
+                        if(w<1)
+                            break;
+                        int log = log2(w);
+                        a=parse_table[a][log];
+                        w-=(ceil(pow(2,log)));
+
+                    }
+                    printf("%d\n",a);
+                    //scanf("%d%d%d",&a,&b,&w);
+                }
+                else
+                {
+                    w=w-(lvl[a]-lvl[findd]);
+                    int tmp = lvl[b]-lvl[findd]+1;
+                    w=tmp-w;
+                    while(1)
+                    {
+                        if(w<1)
+                            break;
+                        int log = log2(w);
+                        b=parse_table[b][log];
+                        w-=(ceil(pow(2,log)));
+
+                    }
+                    printf("%d\n",b);
+
+                }
+            }
+
+        }
+
+        printf("\n");
+        for(int i = 1 ; i<=n ; i++)
+        {
+            vec[i].clear();
+        }
+        memset(parent,0,sizeof parent);
+        memset(visited,0,sizeof visited);
+        memset(lvl,0,sizeof lvl);
+        memset(dis,0,sizeof dis);
+
+    }
+    return 0 ;
+}

@@ -1,0 +1,132 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define print printf("==================\n")
+#define ll long long
+#define pi acos(-1.0)
+#define eps 1e-16
+#define max3(a,b,c) max(a,max(b,c))
+#define mod 1000000007
+const ll INF = 1 << 30;
+#define mod 1000000007
+typedef pair<double, double  > payar;
+typedef struct
+{
+    ll  x, y;
+} point;
+priority_queue<payar, vector<payar>,  greater<payar> > pq; ///accending
+vector< pair<double,payar  > > vpp;
+vector < payar >  vp;
+int maxi=0;
+
+
+int arr[2000000][3];
+int node;
+
+
+
+void insert(int x )
+{
+
+
+    int runningnode=0;
+    for(int i  = 31 ; i>=0 ; i--)
+    {
+        int curbit = (x>>i)&1;///(x/2^i)
+        if(arr[runningnode][curbit]==-1)
+        {
+            arr[runningnode][curbit]=++node;
+        }
+
+        runningnode= arr[runningnode][curbit];
+    }
+}
+
+int mini;
+int maxxor(int x )
+{
+    int runningnode=0;
+    int ans=0;
+    for(int i = 31 ; i>=0 ; i--)
+    {
+        bool curbit = (x>>i)&1;///(x/2^i)
+        if(arr[runningnode][curbit^1]!=-1)
+        {
+            ans+=(1LL<<i);
+            runningnode= arr[runningnode][curbit^1];
+
+        }
+        else
+        {
+            runningnode=  arr[runningnode][curbit];
+        }
+
+    }
+    return ans;
+}
+int minimumor(int x )
+{
+
+    // tri* node = head;
+    int runningnode=0;
+    int ans=0;
+    for(int i = 31; i>=0 ; i--)
+    {
+        int curbit = (x>>i)&1;///(x/2^i)
+        if(arr[runningnode][curbit]!=-1)
+        {
+
+            runningnode=arr[runningnode][curbit];
+
+        }
+        else
+        {
+            ans+=(1LL<<i);
+            runningnode=arr[runningnode][curbit^1];
+        }
+
+    }
+    return ans;
+}
+
+int main()
+{
+
+
+
+    int tst;
+
+    int t;
+    cin>>tst;
+    while(tst--)
+    {
+        node=0;
+        memset(arr,-1,sizeof arr);
+        insert(0);
+
+        cin>>t;
+
+        int tmp=0;
+        int lo=0;
+        for(int i  = 0 ; i<t ; i++)
+        {
+
+            cin>>lo;
+            if(!i)
+            {
+                mini=lo;
+                maxi=lo;
+            }
+            tmp=tmp^lo;
+
+            maxi=max(maxi, maxxor(tmp));
+            mini=min(mini,minimumor(tmp));
+            insert(tmp);
+
+
+        }
+
+        static int kp;
+        printf("Case %d: %d %d\n",++kp,maxi,mini);
+    }
+    return 0;
+}

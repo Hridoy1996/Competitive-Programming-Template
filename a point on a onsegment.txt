@@ -1,0 +1,6 @@
+inline bool onsegment(const Point &p1, const Point &p2, const Point &p3) {
+	Point pmn, pmx;
+	pmn.x = min(p1.x, p2.x), pmn.y = min(p1.y, p2.y);
+	pmx.x = max(p1.x, p2.x), pmx.y = max(p1.y, p2.y);
+	return pmn.x <= p3.x && p3.x <= pmx.x && pmn.y <= p3.y && p3.y <= pmx.y;
+}
