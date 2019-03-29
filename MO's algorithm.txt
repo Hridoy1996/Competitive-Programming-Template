@@ -1,0 +1,63 @@
+const int N=100005;
+const int seg = sqrt(N) + 1;
+struct data
+{
+    int l, r, idx;
+} qry[50005];
+int n, q, ara[N];
+int freq[100005];
+long long ans[50005];
+long long cur = 0;
+bool comp(struct data &d1, struct data &d2)
+{
+    int b1 = d1.l / seg;
+    int b2 = d2.l / seg;
+    if(b1 != b2)
+        return b1 < b2;
+    else
+        return (b1 & 1) ? d1.r < d2.r : d1.r > d2.r;
+}
+inline void add(int x)
+{
+//    cur -= 1LL * freq[x] * freq[x] * x;
+    freq[x]++;
+//    cur += 1LL * freq[x] * freq[x] * x;
+    if(freq[x]==1)
+    {
+        cur++;
+    }
+}
+
+inline void rmv(int x)
+{
+    // cur -= 1LL * freq[x] * freq[x] * x;
+    freq[x]--;
+    //cur += 1LL * freq[x] * freq[x] * x;
+    if(freq[x]==0)
+    {
+        cur--;
+    }
+}
+void mo(int q )
+{
+    sort(qry + 1, qry + q + 1, comp);
+    int l = 1, r = 0;
+    cur = 0;
+    for(int i=1; i<=q; i++)
+    {
+        while(l < qry[i].l)
+            rmv(ara[l++]);
+        while(l > qry[i].l)
+            add(ara[--l]);
+        while(r < qry[i].r)
+            add(ara[++r]);
+        while(r > qry[i].r)
+            rmv(ara[r--]);
+//            cout<<qry[i].idx<<" "<<cur<<endl;
+        ans[qry[i].idx] = cur;
+    }
+    for(int i = 1 ; i<=q ; i++)
+    {
+        printf("%d\n",ans[i]);
+    }
+}
