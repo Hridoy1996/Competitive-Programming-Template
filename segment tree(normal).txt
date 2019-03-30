@@ -1,0 +1,45 @@
+const int N=100005;
+
+
+int a[4*N];
+
+int ara[N];
+struct data
+{
+    int maxi;
+    int mini;
+}  tree[4*N];;
+
+void build(int node, int L, int R)
+{
+    if(L==R)
+    {
+        tree[node].maxi=ara[L];
+        tree[node].mini=ara[L];
+        return;
+    }
+    int M=(L+R)/2;
+    build(node*2, L, M);
+    build(node*2+1, M+1, R);
+    tree[node].maxi=max(tree[node*2].maxi, tree[node*2+1].maxi);
+    tree[node].mini=min(tree[node*2].mini, tree[node*2+1].mini);
+
+}
+int query_max(int node, int L, int R, int i, int j)
+{
+    if (i > R || j < L)
+        return 0;
+
+    if (L >= i and R <= j)
+    {
+        return  tree[node].maxi;
+    }
+    int Left = node << 1;
+    int Right = (node << 1) + 1;
+    int mid = (L + R) >> 1;
+
+    int p1 = query_max(Left, L, mid, i, j);
+    int p2 = query_max(Right, mid + 1, R, i, j);
+
+    return  max(p1, p2);
+}
