@@ -1,0 +1,16 @@
+ll subtree_sum(ll node)
+{
+    vis[node]=1;
+    ll sum=0;
+    for(auto it: g[node])
+    {
+
+        if(!vis[it])
+        {
+            sum+=cost[it]+subtree_sum(it);
+
+        }
+
+    }
+    return subcost[node]= sum;
+}

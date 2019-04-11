@@ -1,0 +1,15 @@
+  double        S=0;
+        for(int i=0; i<V.size()-1; i++)
+            S+=V[i].x*V[i+1].y-V[i+1].x*V[i].y;
+        S/=2;
+
+        double   sum1=0;
+        for(int i=0; i<V.size()-1; i++)
+            sum1+=(V[i].x+V[i+1].x)*(V[i].x*V[i+1].y-V[i+1].x*V[i].y);
+
+        double  sum2=0;
+        for(int i=0; i<V.size()-1; i++)
+            sum2+=(V[i].y+V[i+1].y)*(V[i].x*V[i+1].y-V[i+1].x*V[i].y);
+
+        double        cx=sum1/6/S;
+        double   cy=sum2/6/S;

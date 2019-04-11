@@ -1,0 +1,37 @@
+map<int,int>par;
+struct Node
+{
+    int data;
+    struct Node *left,*right;
+};
+
+Node *newnode(int data)
+{
+    Node *temp=(Node *)malloc(sizeof(Node));
+    temp->data=data;
+    temp->left=temp->right=NULL;
+    return temp;
+}
+Node* insertrt(Node *node, int data)
+{
+    if(node==NULL)
+        return newnode(data);
+    if(node->data >=data)
+        node->left=insertrt(node->left,data);
+    else
+        node->right=insertrt(node->right,data);
+    return node;
+}
+Node* insert(Node *node, int data,int para)
+{
+    if(node==NULL)
+    {
+        par[data]=para;
+        return newnode(data);
+    }
+    if(node->data >=data)
+        node->left=insert(node->left,data,node->data );
+    else
+        node->right=insert(node->right,data,node->data );
+    return node;
+}

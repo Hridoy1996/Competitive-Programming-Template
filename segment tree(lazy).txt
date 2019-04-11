@@ -17,76 +17,41 @@ void build(int node, int L, int R)
     build(node*2, L, M);
     build(node*2+1, M+1, R);
     tree[node].cnt[0]=(tree[node*2].cnt[0] + tree[node*2+1].cnt[0]);
-    tree[node].cnt[1]=(tree[node*2].cnt[1] + tree[node*2+1].cnt[1]);
-    tree[node].cnt[2]=(tree[node*2].cnt[2] + tree[node*2+1].cnt[2]);
+ 
 }
-int query(int node, int L, int R, int i, int j, int carry = 0)
+int query(int node, int b, int e, int i, int j, int carry = 0)
 {
-    if (i > R || j < L)
+    if (i > e || j < b)
         return 0;
- 
-    if (L >= i and R <= j)
-    {
- 
-        return  tree[node].cnt[(3-carry)%3];
- 
- 
-    }
+
+    if (b >= i and e <= j)
+        return tree[node].sum + carry * (e - b + 1);
+
     int Left = node << 1;
     int Right = (node << 1) + 1;
-    int mid = (L + R) >> 1;
- 
-    int p1 = query(Left, L, mid, i, j, ( carry + tree[node].prop ) %3);
-    int p2 = query(Right, mid + 1, R, i, j, ( carry + tree[node].prop ) %3);
- 
+    int mid = (b + e) >> 1;
+
+    int p1 = query(Left, b, mid, i, j, carry + tree[node].prop); 
+    int p2 = query(Right, mid + 1, e, i, j, carry + tree[node].prop);
+
     return p1 + p2;
 }
  
-void update(int node, int L, int R, int i,int j, int x)
+void update(int node, int b, int e, int i, int j, i64 x)
 {
-    if(i>R || j<L)
+    if (i > e || j < b)
         return;
-    if(L>=i and R<=j)
+    if (b >= i && e <= j)
     {
-        int z= tree[node].cnt[0];
-        int o= tree[node].cnt[1];
-        int t= tree[node].cnt[2];
- 
- 
-        tree[node].cnt[1]=z;
-        tree[node].cnt[2]=o;
-        tree[node].cnt[0]=t;
-        tree[node].prop=(tree[node].prop + x)%3;
-        return ;
+        tree[node].sum += ((e - b + 1) * x);
+        tree[node].prop += x;
+        return;
     }
     int Left = node * 2;
     int Right = (node * 2) + 1;
-    int mid = (L + R) / 2;
-    update(Left, L, mid, i, j, x);
-    update(Right, mid + 1, R, i, j, x);
-    int pro=tree[node].prop%3;
-    tree[node].cnt[0] = tree[Left].cnt[0] + tree[Right].cnt[0];
-    tree[node].cnt[1] = tree[Left].cnt[1] + tree[Right].cnt[1];
-    tree[node].cnt[2] = tree[Left].cnt[2] + tree[Right].cnt[2];
-    int ara[3]= {tree[node].cnt[0],tree[node].cnt[1], tree[node].cnt[2]};
- 
-    int z= tree[node].cnt[0];
-    int o= tree[node].cnt[1];
-    int t= tree[node].cnt[2];
- 
-    if(pro==1)
-    {
-        tree[node].cnt[1]=z;
-        tree[node].cnt[2]=o;
-        tree[node].cnt[0]=t;
-    }
-    else if(pro==2)
-    {
- 
-        tree[node].cnt[1]=t;
-        tree[node].cnt[2]=z;
-        tree[node].cnt[0]=o;
- 
-    }
- 
+    int mid = (b + e) / 2;
+    update(Left, b, mid, i, j, x);
+    update(Right, mid + 1, e, i, j, x);
+    tree[node].sum = tree[Left].sum + tree[Right].sum + (e - b + 1) * tree[node].prop;
+
 }
