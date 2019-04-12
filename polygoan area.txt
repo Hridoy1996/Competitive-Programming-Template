@@ -1,3 +1,15 @@
+for (i = 0; i<t - 1; i++){
+			px = x + dx[s[i] - '0'];
+			py = y + dy[s[i] - '0'];
+			area += (px*y - x*py);
+			x = px;
+			y = py;
+		}
+		if (area<0) area =(-area);
+		if (area % 2 == 0)
+			printf_s("%I64d\n", area / 2);
+		else 
+			printf_s("%I64d.5\n", area / 2);
 ll polygonArea(ll X[], ll Y[], int  n)
 {
 
