@@ -1,4 +1,0 @@
-ll i =lower_bound(avn.begin(),avn.end(),l)-avn.begin();
-    ll j =upper_bound(avn.begin(),avn.end(),r)-avn.begin();
-    
-    ll x = j-i;
