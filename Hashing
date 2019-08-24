@@ -1,4 +1,6 @@
 //special thanks to Asishgupta
+
+//hasha  kono char replace korte gele hash valu - old(ascii*2^(n-pos)) +new(ascii*2^(n-pos))
 vector<ll> hashs,hash1,hash2;
 vector<ll> pows;
 map<ll,int>cnt;
