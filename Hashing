@@ -1,30 +1,59 @@
 //special thanks to Asishgupta
-struct Hashs 
+vector<ll> hashs,hash1,hash2;
+vector<ll> pows;
+map<ll,int>cnt;
+ll cache[N][N];
+bool vis[N][N];
+//hashing code courtesy Asisgupta
+bool gethashvalue(ll i, ll j)
 {
-	vector<int> hashs;
-	vector<int> pows;
-	int P;
-	int MOD;
-
-	Hashs() {}
-
-	Hashs(string &s, int P, int MOD) : P(P), MOD(MOD) 
-	{
-		int n = s.size();
-		pows.resize(n+1, 0);
-		hashs.resize(n+1, 0);
-		pows[0] = 1;
-		for(int i=n-1;i>=0;i--) 
-		{
-			hashs[i]=(1LL * hashs[i+1] * P + s[i] - 'a' + 1) % MOD;
-			pows[n-i]=(1LL * pows[n-i-1] * P) % MOD;
-		}
-		pows[n] = (1LL * pows[n-1] * P)%MOD;
-	}
-	int get_hash(int l, int r) 
-	{
-		int ans=hashs[l] + MOD - (1LL*hashs[r+1]*pows[r-l+1])%MOD;
-		ans%=MOD;
-		return ans;
-	}
-};
+//forword and backword hashing 
+    ll f_hash=hash1[j];
+    ll subtract;
+//    ll ans=hashs[l] + mod - (1LL*hashs[r+1]*pows[r-l+1])%mod;
+    if(i>=1)
+        subtract=hash1[i-1];
+    else
+        subtract=0;
+    subtract*=pows[j-i+1];
+    subtract%=mod;
+    f_hash-=subtract;
+    f_hash+=mod;
+    f_hash%=mod;
+    ll r_hash=hash2[i];
+    subtract=hash2[j+1];
+    ll len=j-i+1;
+    subtract*=pows[len];
+    subtract%=mod;
+    r_hash-=subtract;
+    r_hash+=mod;
+    r_hash%=mod;
+    return r_hash==f_hash;
+}
+void Hashs(string &s, ll P)
+{
+    hashs.clear();
+    int n = s.size();
+    pows.resize(n+1, 0);
+    hashs.resize(n+1, 0);
+    pows[0] = 1;
+    for(int i=n-1; i>=0; i--)
+    {
+        hashs[i]=(1LL * hashs[i+1] * P + s[i] - 'a' + 1) % mod;
+      
+    }
+}
+int main(){
+prime[0]=1;
+	for(int i=1; i<n; i++)
+    {
+        prime[i]=prime[i-1]*p;
+        prime[i]%=mod;
+ 
+    }
+    for(int  i=1; i<n; i++)
+    {
+        forwardhash[i]=forwardhash[i-1]*p+ (s[i]-'a'+1);
+        forwardhash[i]%=mod;
+    }'
+    }
