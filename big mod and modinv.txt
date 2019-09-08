@@ -1,0 +1,23 @@
+ll po(ll x, ll y)
+{
+    ll ret=1;
+    x%=modulo;
+    while(y)
+    {
+        if(y&1)
+            ret=(ret*x)%modulo;
+        y=y>>1;
+        x=(x*x)%modulo;
+    }
+    return ret;
+}
+//mod inverse for division mpow(down,mod-2)
+inline long long mpow(long long b, long long ex){
+    if (b==1)return 1;
+    long long r = 1;
+    while (ex ){
+        if (ex&1)r=(r * b)%mod;
+        ex = ex >> 1;
+        b = (b * b)%mod;}
+    return r;
+}
