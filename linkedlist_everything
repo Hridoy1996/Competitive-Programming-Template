@@ -1,0 +1,161 @@
+/*
+T M Hridoy KUET CSE 15
+*/
+#include<bits/stdc++.h>
+
+using namespace std;
+
+#define print cout<<"==================\n";
+typedef    long long ll;
+typedef pair<ll,ll   > payar;
+typedef   unsigned long long ull;
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define min3(a,b,c) min(a,min(b,c));
+#define max3(a,b,c) max(a,max(b,c));
+#define readf                freopen("in.txt", "r", stdin);
+#define writef               freopen("out.txt", "w", stdout);
+priority_queue<int, vector<int>,  greater<int> > pq; ///accending
+vector< pair<int,payar  > > vpp;
+vector < payar >  vp,vp1;
+#define pi acos(-1.0);
+#define EPS 1e-9
+#define  mod   1000000007
+#define  mod2  998244353
+#define all(x) x.begin(),x.end()
+#define endl "\n"
+
+const int N = 1e5 + 5;
+struct node
+{
+    int data;
+    struct node* next;
+};
+class linkedlist
+{
+private:
+    node* head;
+public:
+    linkedlist()
+    {
+        head=NULL;
+    }
+    // void addfront(int val);
+    void add(int val);
+    void addf(int val);
+    void display();
+    bool hascycle();
+
+};
+
+void linkedlist::add(int val)
+{
+    node* newnode = new node();
+    node* temp = new node();
+    temp= head;
+
+    if(temp==NULL)
+    {
+        newnode->next=NULL;
+        newnode->data=val;
+        head = newnode;
+        return ;
+    }
+
+    while(temp->next!=NULL)
+    {
+        temp=temp->next;
+    }
+    newnode->next=NULL;
+    newnode->data=val;
+    temp->next=newnode;
+
+    return;
+
+}
+void linkedlist::addf(int val)
+{
+    node* newnode = new node();
+    newnode->next=NULL;
+    newnode->data=val;
+    head= newnode;
+
+    return;
+
+}
+
+
+void linkedlist::display()
+{
+
+    node* temp = new node();
+    temp= head;
+
+    if(temp==NULL)
+    {
+        return ;
+    }
+    while(temp->next!=NULL)
+    {
+        cout<<temp->data<<" ";
+        temp=temp->next;
+
+    }
+    cout<<temp->data;
+    cout<<endl;
+
+    return;
+
+}
+
+
+bool linkedlist::hascycle()
+{
+
+    node* slow = new node();
+    node* fast = new node();
+
+    slow= head;
+    fast = head;
+
+    if(slow==NULL)
+    {
+        return 0;
+    }
+    while(1)
+    {
+
+
+        if(slow->next==NULL){
+            return 0;
+        }
+        slow=slow->next;
+
+        if(fast->next->next==NULL){
+            return 0;
+        }
+        fast=fast->next->next;
+        if(fast==slow){
+            return 1;
+        }
+
+    }
+
+}
+
+
+int main()
+{
+    IOS;
+    linkedlist ll;
+    int n;
+    cin>>n;
+    for(int i = 0 ; i<n ; i++)
+    {
+        int x;
+        cin>>x;
+        ll.add(x);
+
+    }
+    ll.display();
+    return 0;
+}
