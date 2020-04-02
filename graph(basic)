@@ -1,0 +1,452 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define MAX 10000000
+///*BFS(NORMAL)
+vector<ll>adj[MAX+19];
+bool visited[MAX+10];
+ll bfs(ll source,ll destination )
+{
+
+    queue<ll>q;
+    q.push(source);
+    memset(visited,false,sizeof visited);
+    ll distance[20+5];
+    visited[source]=true;
+    distance[source]=0;
+    while(!q.empty())
+    {
+        ll u=q.front();
+        q.pop();
+        for(ll i=0;i<adj[u].size();i++)
+        {
+            ll v=adj[u][i];
+            if(!visited[v])
+            {
+                visited[v]=true;
+                distance[v]=distance[u]+1;
+                q.push(v);
+            }
+        }
+    }
+    return distance[destination];
+}
+///BICOLORING(BFS)
+bool visited[20000+100];
+vector<ll>vv,ans;
+vector<ll>adj[20000+10];
+void bfs(ll source)
+{
+    ll count=1,count2=0;
+    ll level[20000+100];
+    visited[source]=true;
+    level[source]=0;
+    queue<ll>q;
+    q.push(source);
+    while(!q.empty())
+    {
+        ll u=q.front();
+        q.pop();
+        ll l=adj[u].size();
+        for(ll i=0; i<l; i++)
+        {
+            ll v=adj[u][i];
+            if(visited[v]==false)
+            {
+                visited[v]=true;
+                level[v]=level[u]+1;
+                if(level[v]%2==1)
+                {
+                    count2++;
+                }
+                else
+                {
+                    count++;
+                }
+                q.push(v);
+            }
+        }
+    }
+    ///cout<<source<<" "<<count<<" "<<count2<<endl;
+    ///sum+=max(count,count2);
+    ///cout<<sum<<endl;
+}
+///*BFS (PATH PRINTING)
+vector<ll>adj[50000+100];
+bool visited[50000+100];
+ll parent[50000+100];
+vector<ll>ans;
+void reset()
+{
+    for(ll i=0; i<MAX; i++) adj[i].clear();
+    for(ll i=0; i<MAX; i++) visited[i]=false;
+    for(ll i=0; i<MAX; i++) parent[i]=-1;
+    ans.clear();
+}
+void path(ll dest,ll source)
+{
+    ll x=dest;
+    ///cout<<"a"<<endl;
+    while(1)
+    {
+        ans.push_back(x);
+        if(x==source)
+        {
+            break;
+        }
+        x=parent[x];
+    }
+    ll l=ans.size();
+    reverse(ans.begin(),ans.end());
+    for(ll i=0; i<l; i++) {
+        if(i==l-1) printf("%lld\n",ans[i]);
+    else
+            printf("%lld ",ans[i]);
+    }
+}
+void bfs(ll source,ll destination)
+{
+    ///cout<<source<<" "<<destination<<endl;
+    queue<ll>q;
+    q.push(source);
+    bool flag=0;
+    visited[source]=true;
+    while(!q.empty())
+    {
+        ll u=q.front();
+        q.pop();
+        ll l=adj[u].size();
+        for(ll i=0; i<l; i++)
+        {
+            ll v=adj[u][i];
+            if(visited[v]==false)
+            {
+                parent[v]=u;
+                ///cout<<v<<" ";
+                if(v==destination)
+                {
+                    visited[v]=true;
+                    flag=1;
+                    break;
+                }
+                visited[v]=true;
+                q.push(v);
+            }
+        }
+        if(flag==1) break;
+    }
+    ///cout<<endl;
+    ///cout<<parent[destination]<<endl;
+    ///cout<<source<<" "<<destination<<endl;
+    path(destination,source);
+}
+///*DFS(NORMAL)
+map<char,vector<char> >adj;
+map<char,bool>visited;
+void dfs(char node)
+{
+    visited[node]=true;
+    for(int i=0;i <adj[node].size();i++)
+    {
+        char v=adj[node][i];
+        if(visited[v]==false){
+
+            dfs(v);
+        }
+    }
+}
+///*DFS(DIRECTION ARRAY)
+vector<ll>v,vv;
+char s[100][100],t;
+char grid[100][100];
+ll dx[4]= {1,-1,0,0};
+ll dy[4]= {0,0,1,-1};
+bool visited[MAX],marked[MAX];
+ll a,b,c,x,y,w,n,m,ans;
+ll dfs(ll x,ll y)
+{
+    s[x][y]='@';
+    ll x1,y1;
+    for(ll i=0; i<4; i++)
+    {
+        x1=x+dx[i];
+        y1=y+dy[i];
+        if(x1>=0 && x1<m && y1>=0 && y1<n && s[x1][y1]=='.')
+        {
+                ans+=1;
+                dfs(x1,y1);
+        }
+    }
+    return ans;
+}
+///NUMBER OF TOTAL CHILD OF A NODE
+bool visited[MAX];
+vector<ll>adj[MAX];
+ll parent[100000+100];
+ll level[100000+100];
+ll cnt=0;
+void reset()
+{
+    for(ll i=0;i<MAX;i++)
+    {
+        parent[i]=0;
+        level[i]=0;
+        adj[i].clear();
+        visited[i]=false;
+    }
+}
+void dfs(ll source,ll par,ll dep=0)
+{
+    level[source]=dep;
+    parent[source]=1;
+    for(ll i=0;i<adj[source].size();i++)
+    {
+        ll v=adj[source][i];
+        if(v!=par)
+        {
+            cnt++;
+            dfs(v,source,dep+1);
+            parent[source]+=parent[v];
+        }
+    }
+}
+///NORMAL DIJKSTRA
+#define inf 1000000000000000
+vector< pair<ll,ll> >adj[2500];
+ll des[2500];
+void reset()
+{
+    for(ll i=0;i<=2200;i++)
+    {
+        des[i]=inf;
+        adj[i].clear();
+    }
+}
+ll dijkstra(ll s,ll d)
+{
+    priority_queue< pair<ll,ll> >q;
+    q.push(make_pair(0,s));
+    des[s]=0;
+    while(!q.empty())
+    {
+        ll cost=-q.top().first;
+        ll node=q.top().second;
+        q.pop();
+        for(ll i=0;i<adj[node].size();i++)
+        {
+            ll fcost=adj[node][i].second;
+            ll present_node=adj[node][i].first;
+            if(cost+fcost<des[present_node])
+            {
+                des[present_node]=cost+fcost;
+                q.push(make_pair(-(cost+fcost),present_node));
+            }
+        }
+    }
+    return des[d];
+}
+///2ND BEST ROUTE(DIJKSTRA)
+#define inf 100000000000000
+vector< pair<ll,ll> >adj[6000];
+vector<ll>req[6000];
+bool visited[6000];
+ll des[6000],des2[6000],parent[6000];
+void reset()
+{
+    for(ll i=0;i<6000;i++)
+    {
+        adj[i].clear();
+        des[i]=inf;
+        des2[i]=inf;
+    }
+}
+ll dijkstra(ll n)
+{
+    priority_queue< pair<ll,ll> >q;
+    q.push(make_pair(0,1));
+    des[1]=0;
+    while(!q.empty())
+    {
+        ll node=q.top().second;
+        ll cost=-q.top().first;
+        q.pop();
+        ll l=adj[node].size();
+        for(ll i=0;i<l;i++)
+        {
+            ll fcost=adj[node][i].second;
+            ll present_node=adj[node][i].first;
+            if(cost+fcost<des[present_node])
+            {
+                des2[present_node]=des[present_node];
+                des[present_node]=cost+fcost;
+                q.push(make_pair(-des[present_node],present_node));
+            }
+            if(cost+fcost<des2[present_node] && cost+fcost>des[present_node])
+            {
+                des2[present_node]=cost+fcost;
+                q.push(make_pair(-des2[present_node],present_node));
+            }
+        }
+    }
+    return des2[n];
+}
+///TOLL MANAGEMENT(LIGHTOJ)
+#define inf 100000000000000000
+vector< pair<ll,ll> >adj[11054],backadj[11054];
+vector<ll>v;
+ll des[11050],des2[11054];
+void reset()
+{
+    for(ll i=0; i<=10002; i++)
+    {
+        adj[i].clear();
+        backadj[i].clear();
+        des[i]=inf;
+        des2[i]=inf;
+    }
+}
+void dijkstras(ll s)
+{
+    priority_queue<pair<ll,ll> >q;
+    q.push(make_pair(0,s));
+    des[s]=0;
+    while(!q.empty())
+    {
+        ll cost=-q.top().first;
+        ll node=q.top().second;
+        q.pop();
+        ll l=adj[node].size();
+        for(ll i=0;i<l;i++)
+        {
+            ll fcost=adj[node][i].second;
+            ll present_node=adj[node][i].first;
+            if(des[present_node]>cost+fcost)
+            {
+                des[present_node]=cost+fcost;
+                q.push(make_pair(-des[present_node],present_node));
+            }
+        }
+    }
+}
+void dijkstrat(ll t)
+{
+    priority_queue<pair<ll,ll> >q;
+    q.push(make_pair(0,t));
+    des2[t]=0;
+    while(!q.empty())
+    {
+        ll cost=-q.top().first;
+        ll node=q.top().second;
+        q.pop();
+        ll l=backadj[node].size();
+        for(ll i=0;i<l;i++)
+        {
+            ll fcost=backadj[node][i].second;
+            ll present_node=backadj[node][i].first;
+            if(fcost+cost<des2[present_node])
+            {
+                des2[present_node]=fcost+cost;
+                q.push(make_pair(-des2[present_node],present_node));
+            }
+        }
+    }
+}
+///BELLMANFORD(ACCENDING PATH PRINTING)
+#define inf 1000000000000000
+vector< pair<ll,ll> >adj[1110];
+vector<ll>ans,backadj[1110];
+ll des[1110];
+bool visited[1110];
+void reset()
+{
+    for(ll i=0;i<1100;i++)
+    {
+        des[i]=inf;
+        adj[i].clear();
+        backadj[i].clear();
+        visited[i]=false;
+    }
+    ans.clear();
+}
+void bell_man(ll n)
+{
+    des[0]=0;
+    for(ll i=0; i<n-1; i++)
+    {
+        for(ll j=0; j<n; j++)
+        {
+            ll l=adj[j].size();
+            for(ll k=0; k<l; k++)
+            {
+                ll cost=adj[j][k].second;
+                ll present_node=adj[j][k].first;
+                if(des[present_node]> cost+des[j])
+                {
+                    des[present_node]=cost+des[j];
+                    ///cout<<des[i]<<endl;
+                }
+            }
+        }
+    }
+}
+void dfs(ll node)
+{
+    visited[node]=true;
+    ans.push_back(node);
+    ///cout<<node<<" ";
+    ll l=adj[node].size();
+    for(ll i=0;i<l;i++)
+    {
+        ll vv=adj[node][i].first;
+        ///if(visited[vv]==true) return;
+        if(visited[vv]==false){
+            dfs(vv);
+        }
+    }
+}
+bool cycle(ll n)
+{
+    bool flag=0;
+    for(ll i=0; i<n-1; i++)
+    {
+        for(ll j=0; j<n; j++)
+        {
+            ll l=adj[j].size();
+            for(ll k=0; k<l; k++)
+            {
+                ll cost=adj[j][k].second;
+                ll present_node=adj[j][k].first;
+                if(cost+des[j] < des[present_node])
+                {
+                    ///cout<<"ankon"<<endl;
+                    ///des[present_node]=cost+des[j];
+                    if(visited[present_node]==false){
+                    dfs(present_node);
+                    }
+                    flag=1;
+                }
+            }
+        }
+    }
+    return flag;
+}
+///*FLOYD WARSHALL
+for k from 1 to |V|
+      for i from 1 to |V|
+         for j from 1 to |V|
+            if matrix[i][k] + matrix[k][j] < matrix[i][j] then
+               matrix[i][j] ← matrix[i][k] + matrix[k][j]
+               next[i][j] ← next[i][k]
+
+
+findPath(i, j)
+   path = [i]
+   while i ≠ j
+       i ← next[i][j]
+       path.append(i)
+   return path
+int main()
+{
+
+    return 0;
+}
