@@ -1,0 +1,11 @@
+void dfs(int u, int p) {
+    sz[u] = 1;
+    dep[u] = 1 + dep[p];
+    for (int v: adj[u]) {
+        if (v==p)   continue;
+        dfs(v, u);
+        sz[u] += sz[v];
+    }
+    score.push_back(dep[u]-sz[u]);
+}
+ 
