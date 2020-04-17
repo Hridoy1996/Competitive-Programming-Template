@@ -1,4 +1,5 @@
 //from Ashishgup_India
+//1_ind
 typedef struct data
 {
 	int u, v, w, idx;
