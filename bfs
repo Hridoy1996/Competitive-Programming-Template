@@ -1,7 +1,18 @@
 vector<int> adj[N];
 int dis[N];
-int dis2[N];
+int par[N];
 bool visited[N];
+
+void findPath(int const &startNode, int const &endNode, int* &parent){
+    if( startNode == endNode || endNode == -1){
+        printf("%d\n", startNode);
+    }
+    else{
+        findPath(startNode, parent[endNode], parent);
+        printf("%d\n", endNode);
+    }
+}
+
 void  bfs()
 {
  
@@ -19,6 +30,7 @@ void  bfs()
             int  d = adj[s][i];
             if(!visited[d])
             {
+                par[d]=s;
                 visited[d] = true;
                 dis[d] = dis[s] + 1;
                 q.push(d);
