@@ -1,0 +1,3 @@
+Derangement in a permutation
+
+D(n)=(n−1)(D(n−1)+D(n−2))
