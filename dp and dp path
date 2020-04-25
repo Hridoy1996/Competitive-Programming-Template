@@ -1,0 +1,147 @@
+
+//reference problem: https://codeforces.com/contest/1341/problem/D
+/*
+T M Hridoy KUET CSE 15
+*/
+#include<bits/stdc++.h>
+
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+
+
+using namespace std;
+
+#define print cout<<"==================\n";
+typedef    long long ll;
+typedef pair<int,int   > payar;
+typedef   unsigned long long ull;
+///set
+//int p = s.order_of_key(num) // pos
+//auto p = s.find_by_order(2);// *p ->num
+typedef tree<int,null_type,less<int>,rb_tree_tag,
+        tree_order_statistics_node_update> indexed_set;
+///multiset
+typedef tree<payar,null_type,less<payar>,rb_tree_tag,
+        tree_order_statistics_node_update>ordered_set;
+///map
+template<class key, class value, class cmp = std::less<key>>
+using ordered_map = tree<key, value, cmp, rb_tree_tag, tree_order_statistics_node_update>;
+ordered_map<int, int> my_map;
+
+////////////////////////////////
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define readf                freopen("in.txt", "r", stdin);
+#define writef               freopen("out.txt", "w", stdout);
+priority_queue<int, vector<int>,  greater<int> > pq; ///accending
+vector< pair<payar,int  > > vpp;
+vector < payar >  vp,vp1;
+#define pi acos(-1.0);
+#define EPS 1e-9
+#define  mod   1000000007
+#define  mod2  998244353
+#define all(x) x.begin(),x.end()
+#define endl "\n"
+const int N = 2e3+5;
+/*
+s x X
+*/
+
+
+int dp[N][N];
+int n, can;
+vector<string>h;
+
+string digit[]= {"1110111", "0010010", "1011101", "1011011", "0111010", "1101011", "1101111", "1010010", "1111111", "1111011"};
+
+int tryone(int p, int po)
+{
+    int cn = 0;
+    for(int i = 6 ; i >=0 ; i--)
+    {
+        if(h[po][i]=='1')
+        {
+            if(digit[p][i]=='0')
+            {
+                return -1;
+            }
+        }
+        cn += ( digit[p][i] != h[po][i] );
+    }
+    return cn ;
+}
+
+bool cal(int i, int val )
+{
+    int &cache = dp[i][val];
+
+    if(i==n)
+    {
+        dp[i][val]= val == can;
+        return val == can;
+    }
+
+    if(cache != -1)
+        return cache;
+
+    bool ok = 0 ;
+
+
+    for(int p = 9 ; p >=0 ; p--)
+    {
+
+        int need =  tryone( p, i );
+        if(need==-1 or need+val > can  )
+        {
+            continue;
+        }
+
+        ok = ok | cal(i+1, val+need);
+    }
+
+    return cache = ok;
+
+}
+
+void Print(int id, int val)
+{
+    if(id==n and val==can)
+        return ;
+
+    for(int p = 9 ; p>=0 ; p--)
+    {
+        int ret = tryone(p,id);
+        if(ret != -1)
+        {
+            if(val+ret<=can && dp[id+1][val+ret]==1)
+            {
+                cout<<p;
+                Print(id+1,val+ret);
+                break;
+            }
+        }
+    }
+}
+int main()
+{
+    IOS;
+    int t;
+    cin>>n>>can;
+    string tmp="";
+
+    memset(dp,-1,sizeof dp);
+
+    for(int i = 0 ; i<n ; i++)
+    {
+        cin>>tmp;
+        h.push_back(tmp);
+    }
+
+    if(cal(0,0)==0)
+    {
+        cout<<"-1\n";
+        return 0;
+    }
+    Print(0,0);
+
+    return 0;
+}
