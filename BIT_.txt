@@ -1,4 +1,5 @@
 #from_assisgupta
+1D BIT
 struct BIT
 {
 	int N;
@@ -55,4 +56,33 @@ struct BIT
 		return ans;
 	}
 };
- 
+ 2D BIT:
+ Multiple BIT:
+
+int bit[2][N];
+
+void update(int i, int idx, int k)
+{
+	while(idx<=n)
+	{
+		bit[i][idx]+=k;
+		idx+=idx&-idx;
+	}
+}
+
+int pref(int i, int idx)
+{
+	int ans=0;
+	while(idx>0)
+	{
+		ans+=bit[i][idx];
+		idx-=idx&-idx;
+	}
+	return ans;
+}
+
+int rsum(int i, int l, int r)
+{
+	return pref(i, r) - pref(i, l-1);
+}
+
