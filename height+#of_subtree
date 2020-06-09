@@ -1,6 +1,8 @@
 vector<int>adj[N];
-int dep[N],vis[N],sz[N];
+int dep[N],vis[N],sz[N],tin[N],tout[N];
 void dfs(int u, int p) {
+    t++;
+    tin[u]=t;
     sz[u] = 1;
     dep[u] = 1 + dep[p];
     for (int v: adj[u]) {
@@ -8,6 +10,7 @@ void dfs(int u, int p) {
         dfs(v, u);
         sz[u] += sz[v];
     }
+      tout[u]=++t;
     //score.push_back(dep[u]-sz[u]);
 }
 
