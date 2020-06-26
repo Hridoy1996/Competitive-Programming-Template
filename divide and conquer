@@ -1,0 +1,84 @@
+//example problem link : https://www.hackerrank.com/challenges/largest-rectangle/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=stacks-queues
+const int N = 1e5 + 5;
+ll n, md;
+ll arr[N];
+
+ll calculate(int x,int m, int y)
+{
+
+    ll maxi=arr[m];
+    int i;
+    int j ;
+    ll minisofar=arr[m];
+    for( i = m-1, j = m+1 ; i>=x and j<=y  ; )
+    {
+
+        if(arr[i]>arr[j])
+        {
+
+            minisofar = min(minisofar,arr[i]);
+            maxi=max(maxi,minisofar*(j-i));
+            i--;
+        }
+        else if(arr[i]<arr[j])
+        {
+
+            minisofar = min(minisofar,arr[j]);
+            maxi=max(maxi,minisofar*(j-i));
+            j++;
+        }
+        else
+        {
+            minisofar = min(minisofar,arr[j]);
+            maxi=max(maxi,minisofar*(j-i+1));
+            j++;
+            i--;
+        }
+
+    }
+    for( ; i>=x  ; i-- )
+    {
+        minisofar = min(minisofar,arr[i]);
+        maxi=max(maxi,minisofar*(j-i));
+        i--;
+
+
+    }
+    for(; j<=y  ; )
+    {
+        minisofar = min(minisofar,arr[j]);
+        maxi=max(maxi,minisofar*(j-i));
+        j++;
+    }
+    return maxi;
+}
+
+
+ll look(int l,int h)
+{
+    if(l==h)
+    {
+        return arr[l];
+    }
+
+    int m = (l+h)>>1;
+
+    return max(look(l,m), look(m+1,h), calculate(l,m,h) );
+
+
+
+}
+int main()
+{
+    IOS;
+    cin>>n;
+
+    for(int i = 0 ; i < n ; i++)
+    {
+        cin>>arr[i];
+    }
+    cout<<look(0,n-1);
+
+    return 0;
+
+}
