@@ -22,3 +22,18 @@ void dfs(int u, int p) {
         adj[a].push_back(b);
         adj[b].push_back(a);
     }
+//no of leaf ;
+ll dfs(int u, int p )
+{
+    bool is_leaf = 1;
+    int sum = 0 ;
+
+   for(auto &it: adj[u]){
+        
+        if(v==p)
+            continue;
+        is_leaf=0;
+        ll tot_leaf = dfs(v,u);
+        sum+=tot_leaf;
+    }
+    return sum + is_leaf;
